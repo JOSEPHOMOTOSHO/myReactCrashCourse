@@ -18,12 +18,14 @@ const App = () => {
       objectID: 1,
     },
   ];
+  const handleSearch = (event) => {
+    console.log(event.target.value);
+  };
 
-  const [searchTerm, setSearchTerm] = useState("");
   return (
     <div className="container">
       <Heading />
-      <Label searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Search consoleOnSearch={handleSearch} />
       <ListRender list={stories} />
     </div>
   );
@@ -45,9 +47,11 @@ const ListRender = (props) => {
   });
 };
 
-const Label = ({ searchTerm, setSearchTerm }) => {
+const Search = ({ consoleOnSearch }) => {
+  const [searchTerm, setSearchTerm] = useState("");
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+    consoleOnSearch(event);
   };
   return (
     <>
@@ -61,6 +65,7 @@ const Label = ({ searchTerm, setSearchTerm }) => {
     </>
   );
 };
+
 
 const Heading = () => {
   return (
