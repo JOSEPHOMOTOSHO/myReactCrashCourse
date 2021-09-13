@@ -18,6 +18,7 @@ const App = () => {
       objectID: 1,
     },
   ];
+  //1.created a function
   const handleSearch = (event) => {
     console.log(event.target.value);
   };
@@ -25,6 +26,7 @@ const App = () => {
   return (
     <div className="container">
       <Heading />
+      {/* 2. Passed the function as props to Search component with an attribute if consoleOnSearch */}
       <Search consoleOnSearch={handleSearch} />
       <ListRender list={stories} />
     </div>
@@ -47,10 +49,13 @@ const ListRender = (props) => {
   });
 };
 
+// 3.passed the attribute as an argument to the Search Component function definition
 const Search = ({ consoleOnSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+    // 4.Called the attribute consoleOnSearch that points to the handleSearch Function(it was called back when handlChange function gets called onChange on line 63)
+    //i believe consoleOnSearch is called the callBack handler
     consoleOnSearch(event);
   };
   return (
