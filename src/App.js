@@ -19,7 +19,7 @@ const App = () => {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("Redux");
 
   //callback handler that updates a state with typing value
   const handleChange = (event) => {
@@ -33,7 +33,7 @@ const App = () => {
   return (
     <div className="container">
       <Heading />
-      <Search changeOnType={handleChange} />
+      <Search changeOnType={handleChange} search={searchTerm} />
       {/* pass line 30 as a prop to ListRender */}
       <ListRender list={filteredStories} />
     </div>
@@ -56,11 +56,15 @@ const ListRender = ({ list }) => {
   });
 };
 
-const Search = ({ changeOnType }) => {
+const Search = ({ changeOnType, search }) => {
   return (
     <>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={changeOnType} />
+      {/* onChange call the handleChange function that was passed to changeOnType. it tells the 
+      callback handler (handleChange to update the UI ). value attribute is assigned to searchTerm
+      */}
+
+      <input id="search" type="text" onChange={changeOnType} value={search} />
     </>
   );
 };
