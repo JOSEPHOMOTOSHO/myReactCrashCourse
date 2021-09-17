@@ -18,6 +18,7 @@ const App = () => {
       objectID: 1,
     },
   ];
+
   //1.created a function
   const handleSearch = (event) => {
     console.log(event.target.value);
@@ -26,7 +27,7 @@ const App = () => {
   return (
     <div className="container">
       <Heading />
-      {/* 2. Passed the function as props to Search component with an attribute if consoleOnSearch */}
+      {/* 2. Passed the function as props to Search component with an attribute of consoleOnSearch */}
       <Search consoleOnSearch={handleSearch} />
       <ListRender list={stories} />
     </div>
@@ -35,7 +36,6 @@ const App = () => {
 
 const ListRender = (props) => {
   return props.list.map((item) => {
-    <h1>Good</h1>;
     return (
       <div key={item.objectID}>
         <span>
@@ -49,20 +49,23 @@ const ListRender = (props) => {
   });
 };
 
-// 3.passed the attribute as an argument to the Search Component function definition
 const Search = ({ consoleOnSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const handleChange = (event) => {
+    //remember setSearchTerm function changes the state of searchTerm which is initially an empty string
     setSearchTerm(event.target.value);
-    // 4.Called the attribute consoleOnSearch that points to the handleSearch Function(it was called back when handlChange function gets called onChange on line 63)
-    //i believe consoleOnSearch is called the callBack handler
+
+    //3. call the handleSearch  function that the "consoleOnSearch variable" points to...this logs what you typed
+    //in the input box in line 67
+
+    //here consoleOnSearch is the callback handler i.e. it gets called when handleChange function is called
     consoleOnSearch(event);
   };
   return (
     <>
       <label htmlFor="search">Search: </label>
+      {/* handleChange function is called onChange...when typing in the inputBox */}
       <input id="search" type="text" onChange={handleChange} />
-
       <hr />
       <p>
         Searching for: <strong>{searchTerm}</strong>
@@ -70,11 +73,10 @@ const Search = ({ consoleOnSearch }) => {
     </>
   );
 };
-
-
 const Heading = () => {
   return (
     <>
+      <h1>Good</h1>
       <h1>Omotosho Joseph is learning React</h1>
     </>
   );
