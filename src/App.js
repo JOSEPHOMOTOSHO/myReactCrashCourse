@@ -42,10 +42,11 @@ const App = () => {
 
 // the filtered items you get pick some value in an item you have and populate the ui
 const ListRender = ({ list }) =>
-  //use a map to create the Item component with a map function that has key attr
+  //use a map to create the Item component with a map function that has key. 
+        //Rest operation occured below (line 47)
   list.map(({objectID,...item}) => <Item key={objectID} item={...item} />);
-
-//Item component
+                                                          //Spread operation occurred above (line 47)
+//Item component. Line 50 has properties destructured from the item object
 const Item = ({url,title,author,num_comments,points}) => (
   <div>
     <span>
