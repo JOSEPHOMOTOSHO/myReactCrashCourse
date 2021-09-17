@@ -44,7 +44,7 @@ const App = () => {
 const ListRender = ({ list }) =>
   //use a map to create the Item component with a map function that has key. 
         //Rest operation occured below (line 47)
-  list.map(({objectID,...item}) => <Item key={objectID} item={...item} />);
+  list.map(({objectID,...item}) => <Item key={objectID} {...item} />);
                                                           //Spread operation occurred above (line 47)
 //Item component. Line 50 has properties destructured from the item object
 const Item = ({url,title,author,num_comments,points}) => (
@@ -81,3 +81,10 @@ const Heading = () => {
 };
 
 export default App;
+
+
+/*
+Note
+React Side-Effects
+
+*/
