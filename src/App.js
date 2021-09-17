@@ -19,23 +19,30 @@ const App = () => {
     },
   ];
 
-  //1.created a function
-  const handleSearch = (event) => {
-    console.log(event.target.value);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  //callback handler that updates a state with typing value
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
+  //filter an array based on a particular state
+  const filteredStories = stories.filter((story) =>
+    story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div className="container">
       <Heading />
-      {/* 2. Passed the function as props to Search component with an attribute of consoleOnSearch */}
-      <Search consoleOnSearch={handleSearch} />
-      <ListRender list={stories} />
+      <Search changeOnType={handleChange} />
+      {/* pass line 30 as a prop to ListRender */}
+      <ListRender list={filteredStories} />
     </div>
   );
 };
 
-const ListRender = (props) => {
-  return props.list.map((item) => {
+// the filtered items you get pick some value in an item you have and populate the ui
+const ListRender = ({ list }) => {
+  return list.map((item) => {
     return (
       <div key={item.objectID}>
         <span>
@@ -49,27 +56,11 @@ const ListRender = (props) => {
   });
 };
 
-const Search = ({ consoleOnSearch }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const handleChange = (event) => {
-    //remember setSearchTerm function changes the state of searchTerm which is initially an empty string
-    setSearchTerm(event.target.value);
-
-    //3. call the handleSearch  function that the "consoleOnSearch variable" points to...this logs what you typed
-    //in the input box in line 67
-
-    //here consoleOnSearch is the callback handler i.e. it gets called when handleChange function is called
-    consoleOnSearch(event);
-  };
+const Search = ({ changeOnType }) => {
   return (
     <>
       <label htmlFor="search">Search: </label>
-      {/* handleChange function is called onChange...when typing in the inputBox */}
-      <input id="search" type="text" onChange={handleChange} />
-      <hr />
-      <p>
-        Searching for: <strong>{searchTerm}</strong>
-      </p>
+      <input id="search" type="text" onChange={changeOnType} />
     </>
   );
 };
