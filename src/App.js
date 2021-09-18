@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 const App = () => {
   const stories = [
     {
@@ -19,9 +20,16 @@ const App = () => {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = useState("Redux");
+  const [searchTerm, setSearchTerm] = useState(
+    localStorage.getItem("search") || "React"
+  );
 
-  //callback handler that updates a state with typing value
+  //React Side Effect. that does something outside React Domain. local storage uses the browser api which is not from react
+  useEffect(() => {
+    console.log(localStorage.setItem("search", searchTerm));
+  }, [searchTerm]);
+
+  //callback handler that updates a searchTerm state when typing values
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -34,7 +42,6 @@ const App = () => {
     <div className="container">
       <Heading />
       <Search changeOnType={handleChange} search={searchTerm} />
-      {/* pass line 30 as a prop to ListRender */}
       <ListRender list={filteredStories} />
     </div>
   );
@@ -42,12 +49,12 @@ const App = () => {
 
 // the filtered items you get pick some value in an item you have and populate the ui
 const ListRender = ({ list }) =>
-  //use a map to create the Item component with a map function that has key. 
-        //Rest operation occured below (line 47)
-  list.map(({objectID,...item}) => <Item key={objectID} {...item} />);
-                                                          //Spread operation occurred above (line 47)
-//Item component. Line 50 has properties destructured from the item object
-const Item = ({url,title,author,num_comments,points}) => (
+  //use a map to create the Item component with a map function that has key.
+  //Rest operation occured below (line 47)
+  list.map(({ objectID, ...item }) => <Item key={objectID} {...item} />);
+//Spread operation occurred above (line 47)
+//Item component. Line 54 has properties destructured from the item object
+const Item = ({ url, title, author, num_comments, points }) => (
   <div>
     <span>
       <a href={url}> {title}</a>
@@ -57,7 +64,6 @@ const Item = ({url,title,author,num_comments,points}) => (
     <span>{points}</span>
   </div>
 );
-
 
 const Search = ({ changeOnType, search }) => {
   return (
@@ -82,9 +88,27 @@ const Heading = () => {
 
 export default App;
 
-
 /*
 Note
 React Side-Effects
+Next we’ll add a feature to our Search component in the form of another
+React hook. We’ll make the Search component remember the most recent
+search interaction, so the application opens it in the browser whenever it
+restarts.
 
+The browser should remember the latest search term. 
+Using the local storage in React can be seen as a side-effect because we interact outside of React’s domain
+by using the browser’s API.
+There is one flaw, though. The handler function should mostly be concerned
+about updating the state, but now it has a side-effect.
+
+React’s useEffect Hook takes two arguments: The first argument is a
+function where the side-effect occurs. In our case, the side-effect is when
+the user types the searchTerm into the browser’s local storage. The optional
+second argument is a dependency array of variables.
+
+If one of these
+variables changes, the function for the side-effect is called. In our case, the
+function is called every time the searchTerm changes; and it’s also called
+initially when the component renders for the first time.
 */
