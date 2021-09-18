@@ -49,14 +49,10 @@ const App = () => {
   return (
     <div className="container">
       <Heading />
-      {/* line 54:turned the search component into a more resuable component with ability to change properties from outside. 
-      Instead of from within comonent declaration */}
-      <Search
-        id="search"
-        label="search:"
-        value={searchTerm}
-        onInputChange={handleSearch}
-      />
+      {/* Making react behave like a html element i.e <tag></tag>. ADD "SEARCH" IN THE MIDDLE WITH OPEN AND CLOSE COMPONENT TAGS. */}
+      <Search id="search" value={searchTerm} onInputChange={handleSearch}>
+        <bold>Search</bold>
+      </Search>
       <ListRender list={filteredStories} />
     </div>
   );
@@ -80,10 +76,12 @@ const Item = ({ url, title, author, num_comments, points }) => (
   </div>
 );
 
-//passed the props to the Search component
-const Search = ({ id, label, value, onInputChange, type = "text" }) => (
+//passed the props to the Search component.
+//add the search passed in between the search component tags as children in the component declaraton
+const Search = ({ id, value, onInputChange, type = "text", children }) => (
   <>
-    <label htmlFor={id}>{label} </label>
+    {/* children refers to what was passed in the middle */}
+    <label htmlFor={id}> {children}</label>
     &nbsp;
     <input id={id} type={type} onChange={onInputChange} value={value} />
   </>
