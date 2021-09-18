@@ -1,5 +1,20 @@
 import { useState, useEffect } from "react";
 
+//here i am creating a custom hook. always remember to add the prefix "use" when creating a custom hook
+const useSemiPersistentState = (key,initialState) => {
+  const [value, setValue] = useState(
+    localStorage.getItem(key) || initialState
+  );
+
+  useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [value,key]);
+
+  return [value , setValue];
+};
+
+
+
 const App = () => {
   const stories = [
     {
@@ -19,17 +34,10 @@ const App = () => {
       objectID: 1,
     },
   ];
+//calling my custom hook here
+  const [searchTerm, setSearchTerm] = useSemiPersistentState("vaue",'React');
 
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem("search") || "React"
-  );
-
-  //React Side Effect. that does something outside React Domain. local storage uses the browser api which is not from react
-  useEffect(() => {
-    console.log(localStorage.setItem("search", searchTerm));
-  }, [searchTerm]);
-
-  //callback handler that updates a searchTerm state when typing values
+//callback handler that updates a searchTerm state when typing values
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
