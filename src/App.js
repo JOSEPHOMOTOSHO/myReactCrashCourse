@@ -34,11 +34,11 @@ const App = () => {
       objectID: 1,
     },
   ];
-//calling my custom hook here
-  const [searchTerm, setSearchTerm] = useSemiPersistentState("vaue",'React');
+  //calling my custom hook here
+  const [searchTerm, setSearchTerm] = useSemiPersistentState("vaue", "React");
 
-//callback handler that updates a searchTerm state when typing values
-  const handleChange = (event) => {
+  //callback handler that updates a searchTerm state when typing values
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
@@ -49,7 +49,14 @@ const App = () => {
   return (
     <div className="container">
       <Heading />
-      <Search changeOnType={handleChange} search={searchTerm} />
+      {/* line 54:turned the search component into a more resuable component with ability to change properties from outside. 
+      Instead of from within comonent declaration */}
+      <Search
+        id="search"
+        label="search:"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
       <ListRender list={filteredStories} />
     </div>
   );
@@ -73,18 +80,14 @@ const Item = ({ url, title, author, num_comments, points }) => (
   </div>
 );
 
-const Search = ({ changeOnType, search }) => {
-  return (
-    <>
-      <label htmlFor="search">Search: </label>
-      {/* onChange call the handleChange function that was passed to changeOnType. it tells the 
-      callback handler (handleChange to update the UI ). value attribute is assigned to searchTerm
-      */}
-
-      <input id="search" type="text" onChange={changeOnType} value={search} />
-    </>
-  );
-};
+//passed the props to the Search component
+const Search = ({ id, label, value, onInputChange, type = "text" }) => (
+  <>
+    <label htmlFor={id}>{label} </label>
+    &nbsp;
+    <input id={id} type={type} onChange={onInputChange} value={value} />
+  </>
+);
 const Heading = () => {
   return (
     <>
